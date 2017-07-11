@@ -93,7 +93,7 @@ Json::Value Debug::debug_traceTransaction(string const& _txHash, Json::Value con
 		e.setResultRecipient(er);
 		Json::Value trace = traceTransaction(e, t, _json);
 		ret["gas"] = toHex(t.gas(), HexPrefix::Add);
-		ret["return"] = toHex(er.output, 2, HexPrefix::Add);
+		ret["return"] = toHex(er.output, HexPrefix::Add);
 		ret["structLogs"] = trace;
 	}
 	catch(Exception const& _e)
@@ -203,7 +203,7 @@ Json::Value Debug::debug_traceCall(Json::Value const& _call, std::string const& 
 		e.setResultRecipient(er);
 		Json::Value trace = traceTransaction(e, transaction, _options);
 		ret["gas"] = toHex(transaction.gas(), HexPrefix::Add);
-		ret["return"] = toHex(er.output, 2, HexPrefix::Add);
+		ret["return"] = toHex(er.output, HexPrefix::Add);
 		ret["structLogs"] = trace;
 	}
 	catch(Exception const& _e)

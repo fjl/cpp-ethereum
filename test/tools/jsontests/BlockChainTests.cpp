@@ -226,7 +226,7 @@ void fillBCTest(json_spirit::mObject& _o)
 	assert(testChain.interface().isKnown(genesisBlock.blockHeader().hash(WithSeal)));
 
 	_o["genesisBlockHeader"] = writeBlockHeaderToJson(genesisBlock.blockHeader());
-	_o["genesisRLP"] = toHex(genesisBlock.bytes(), 2, HexPrefix::Add);
+	_o["genesisRLP"] = toHex(genesisBlock.bytes(), HexPrefix::Add);
 	BOOST_REQUIRE(_o.count("blocks"));
 
 	mArray blArray;
@@ -317,7 +317,7 @@ void fillBCTest(json_spirit::mObject& _o)
 		if (blObj.count("blockHeader"))
 			overwriteBlockHeaderForTest(blObj.at("blockHeader").get_obj(), alterBlock, *chainMap[chainname]);
 
-		blObj["rlp"] = toHex(alterBlock.bytes(), 2, HexPrefix::Add);
+		blObj["rlp"] = toHex(alterBlock.bytes(), HexPrefix::Add);
 		blObj["blockHeader"] = writeBlockHeaderToJson(alterBlock.blockHeader());
 
 		mArray aUncleList;
@@ -808,7 +808,7 @@ mObject writeBlockHeaderToJson(BlockHeader const& _bi)
 	o["gasLimit"] = toCompactHex(_bi.gasLimit(), HexPrefix::Add, 1);
 	o["gasUsed"] = toCompactHex(_bi.gasUsed(), HexPrefix::Add, 1);
 	o["timestamp"] = toCompactHex(_bi.timestamp(), HexPrefix::Add, 1);
-	o["extraData"] = (_bi.extraData().size()) ? toHex(_bi.extraData(), 2, HexPrefix::Add) : "";
+	o["extraData"] = (_bi.extraData().size()) ? toHex(_bi.extraData(), HexPrefix::Add) : "";
 	o["mixHash"] = toString(Ethash::mixHash(_bi));
 	o["nonce"] = toString(Ethash::nonce(_bi));
 	o["hash"] = toString(_bi.hash());

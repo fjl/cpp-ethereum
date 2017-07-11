@@ -636,7 +636,7 @@ void ImportTest::checkGeneralTestSectionSearch(json_spirit::mObject const& _expe
 				}
 			}			
 			else if (_expects.count("hash"))
-				BOOST_CHECK_MESSAGE(_expects.at("hash").get_str() == toHex(tr.postState.rootHash().asBytes(), 2, HexPrefix::Add), TestOutputHelper::testName() + " Expected another postState hash! expected: " + _expects.at("hash").get_str() + " actual: " + toHex(tr.postState.rootHash().asBytes()) + " in " + trInfo);
+				BOOST_CHECK_MESSAGE(_expects.at("hash").get_str() == toHex(tr.postState.rootHash().asBytes(), HexPrefix::Add), TestOutputHelper::testName() + " Expected another postState hash! expected: " + _expects.at("hash").get_str() + " actual: " + toHex(tr.postState.rootHash().asBytes()) + " in " + trInfo);
 			else
 				BOOST_ERROR(TestOutputHelper::testName() + " Expect section or postState missing some fields!");
 
@@ -700,7 +700,7 @@ int ImportTest::exportTest(bytes const& _output)
 			obj["gas"] = tr.gasInd;
 			obj["value"] = tr.valInd;
 			obj2["indexes"] = obj;
-			obj2["hash"] = toHex(tr.postState.rootHash().asBytes(), 2, HexPrefix::Add);
+			obj2["hash"] = toHex(tr.postState.rootHash().asBytes(), HexPrefix::Add);
 
 			//Print the post state if transaction has failed on expect section
 			if (Options::get().checkstate)
@@ -725,7 +725,7 @@ int ImportTest::exportTest(bytes const& _output)
 	else
 	{
 		// export output
-		m_testObject["out"] = (_output.size() > 4096 && !Options::get().fulloutput) ? "#" + toString(_output.size()) : toHex(_output, 2, HexPrefix::Add);
+		m_testObject["out"] = (_output.size() > 4096 && !Options::get().fulloutput) ? "#" + toString(_output.size()) : toHex(_output, HexPrefix::Add);
 
 		// compare expected output with post output
 		if (m_testObject.count("expectOut") > 0)

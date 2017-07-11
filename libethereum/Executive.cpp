@@ -112,7 +112,7 @@ void StandardTrace::operator()(uint64_t _steps, uint64_t PC, Instruction inst, b
 		for (unsigned i = 0; i < vm.memory().size(); i += 32)
 		{
 			bytesConstRef memRef(vm.memory().data() + i, 32);
-			memJson.append(toHex(memRef, 2, HexPrefix::DontAdd));
+			memJson.append(toHex(memRef, HexPrefix::DontAdd));
 		}
 		r["memory"] = memJson;
 	}

@@ -40,7 +40,7 @@ json_spirit::mObject fillJsonWithTransaction(Transaction const& _txn)
 {
 	json_spirit::mObject txObject;
 	txObject["nonce"] = toCompactHex(_txn.nonce(), HexPrefix::Add, 1);
-	txObject["data"] = _txn.data().size() ? toHex(_txn.data(), 2, HexPrefix::Add) : "";
+	txObject["data"] = _txn.data().size() ? toHex(_txn.data(), HexPrefix::Add) : "";
 	txObject["gasLimit"] = toCompactHex(_txn.gas(), HexPrefix::Add, 1);
 	txObject["gasPrice"] = toCompactHex(_txn.gasPrice(), HexPrefix::Add, 1);
 	txObject["r"] = toCompactHex(_txn.signature().r, HexPrefix::Add, 1);
@@ -90,8 +90,8 @@ json_spirit::mObject fillJsonWithStateChange(State const& _stateOrig, eth::State
 			{
 				case Change::Kind::Code:
 					//take the original and final code only
-					before = toHex(_stateOrig.code(change.address), 2, HexPrefix::Add);
-					after = toHex(_statePost.code(change.address), 2, HexPrefix::Add);
+					before = toHex(_stateOrig.code(change.address), HexPrefix::Add);
+					after = toHex(_statePost.code(change.address), HexPrefix::Add);
 					record.push_back(before);
 					record.push_back("->");
 					record.push_back(after);
@@ -202,7 +202,7 @@ json_spirit::mObject fillJsonWithState(State const& _state, eth::AccountMaskMap 
 		if (mapEmpty || _map.at(a.first).hasCode())
 		{
 			if (_state.code(a.first).size() > 0)
-				o["code"] = toHex(_state.code(a.first), 2, HexPrefix::Add);
+				o["code"] = toHex(_state.code(a.first), HexPrefix::Add);
 			else
 				o["code"] = "";
 		}

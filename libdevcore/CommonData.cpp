@@ -37,6 +37,9 @@ using namespace dev;
 
 namespace
 {
+
+const char* hexdigits = "0123456789abcdef";
+
 int fromHexChar(char _i) noexcept
 {
 	if (_i >= '0' && _i <= '9')
@@ -47,6 +50,21 @@ int fromHexChar(char _i) noexcept
 		return _i - 'A' + 10;
 	return -1;
 }
+
+}
+
+std::string dev::toHexUnsafe(const byte* _data, size_t _len, bool _prefix)
+{
+	size_t off = (_prefix) ? 2 : 0;
+	std::string rc(_len*2 + off, '0');
+	if (_prefix)
+		rc.replace(0, 2, "0x");
+	for (size_t i = 0; i < _len; i++)
+	{
+		rc[off++] = hexdigits[_data[i]>>4];
+		rc[off++] = hexdigits[_data[i]&0x0f];
+	}
+	return rc;
 }
 
 bool dev::isHex(string const& _s) noexcept
