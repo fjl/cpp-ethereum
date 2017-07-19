@@ -52,9 +52,6 @@ public:
 	void checkGeneralTestSection(json_spirit::mObject const& _expects, std::vector<size_t>& _errorTransactions, std::string const& _network="") const;
 	void traceStateDiff();
 
-	eth::State m_statePre;
-	eth::State m_statePost;
-
 private:
 	using ExecOutput = std::pair<eth::ExecutionResult, eth::TransactionReceipt>;
 	std::tuple<eth::State, ExecOutput, eth::ChangeLog> executeTransaction(eth::Network const _sealEngineNetwork, eth::EnvInfo const& _env, eth::State const& _preState, eth::Transaction const& _tr);
@@ -62,6 +59,7 @@ private:
 	std::unique_ptr<eth::LastBlockHashesFace const> m_lastBlockHashes;
 	std::unique_ptr<eth::EnvInfo> m_envInfo;
 	eth::Transaction m_transaction;
+	eth::State m_statePre;
 
 	//General State Tests
 	struct transactionToExecute

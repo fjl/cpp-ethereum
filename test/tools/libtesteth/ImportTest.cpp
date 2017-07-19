@@ -43,7 +43,6 @@ vector<h256> lastHashes(u256 _currentBlockNumber)
 
 ImportTest::ImportTest(json_spirit::mObject& _o):
 	m_statePre(0, OverlayDB(), eth::BaseState::Empty),
-	m_statePost(0, OverlayDB(), eth::BaseState::Empty),
 	m_testObject(_o)
 {
 	importEnv(_o["env"].get_obj());
