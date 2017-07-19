@@ -36,11 +36,9 @@ void printHelp()
 	cout << setw(30) << "--testpath <PathToTheTestRepo>" << std::endl;
 
 	cout << std::endl << "Debugging" << std::endl;
-	cout << setw(30) << "-d <index>" << setw(25) << "Set the transaction data array index when running GeneralStateTests" << std::endl;
-	cout << setw(30) << "-g <index>" << setw(25) << "Set the transaction gas array index when running GeneralStateTests" << std::endl;
-	cout << setw(30) << "-v <index>" << setw(25) << "Set the transaction value array index when running GeneralStateTests" << std::endl;
 	cout << setw(30) << "--singletest <TestName>" << setw(25) << "Run on a single test" << std::endl;
 	cout << setw(30) << "--singletest <TestFile> <TestName>" << std::endl;
+	cout << setw(30) << "--singlenet <Network>" << setw(25) << "Run tests for single network" << std::endl;
 	cout << setw(30) << "--verbosity <level>" << setw(25) << "Set logs verbosity. 0 - silent, 1 - only errors, 2 - informative, >2 - detailed" << std::endl;
 	cout << setw(30) << "--vm <interpreter|jit|smart>" << setw(25) << "Set VM type for VMTests suite" << std::endl;
 	cout << setw(30) << "--vmtrace" << setw(25) << "Enable VM trace for the test. (Require build with VMTRACE=1)" << std::endl;
@@ -87,9 +85,6 @@ void Options::checkAllowedNetwork(std::vector<std::string> const& _networks)
 
 Options::Options(int argc, char** argv)
 {
-	trDataIndex = -1;
-	trGasIndex = -1;
-	trValueIndex = -1;
 	bool seenSeparator = false; // true if "--" has been seen.
 	for (auto i = 0; i < argc; ++i)
 	{
@@ -232,21 +227,6 @@ Options::Options(int argc, char** argv)
 		}
 		else if (arg == "--nonetwork")
 			nonetwork = true;
-		else if (arg == "-d")
-		{
-			throwIfNoArgumentFollows();
-			trDataIndex = atoi(argv[++i]);
-		}
-		else if (arg == "-g")
-		{
-			throwIfNoArgumentFollows();
-			trGasIndex = atoi(argv[++i]);
-		}
-		else if (arg == "-v")
-		{
-			throwIfNoArgumentFollows();
-			trValueIndex = atoi(argv[++i]);
-		}
 		else if (arg == "--testpath")
 		{
 			throwIfNoArgumentFollows();

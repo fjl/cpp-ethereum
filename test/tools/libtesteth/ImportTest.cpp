@@ -65,14 +65,6 @@ bytes ImportTest::executeTest()
 	{
 		for (auto& tr : m_transactions)
 		{
-			Options const& opt = Options::get();
-			if(opt.trDataIndex != -1 && opt.trDataIndex != tr.dataInd)
-				continue;
-			if(opt.trGasIndex != -1 && opt.trGasIndex != tr.gasInd)
-				continue;
-			if(opt.trValueIndex != -1 && opt.trValueIndex != tr.valInd)
-				continue;
-
 			std::tie(tr.postState, tr.output, tr.changeLog) =
 				executeTransaction(net, *m_envInfo, m_statePre, tr.transaction);
 			tr.netId = netIdToString(net);
@@ -547,15 +539,6 @@ void ImportTest::checkGeneralTestSectionSearch(json_spirit::mObject const& _expe
 		parseJsonIntValueIntoVector(indexes.at("gas"), g);
 		parseJsonIntValueIntoVector(indexes.at("value"), v);
 		BOOST_CHECK_MESSAGE(d.size() > 0 && g.size() > 0 && v.size() > 0, TestOutputHelper::testName() + " Indexes arrays not set!");
-
-		//Skip this check if does not fit to options request
-		Options const& opt = Options::get();
-		if (!inArray(d, opt.trDataIndex) && !inArray(d, -1) && opt.trDataIndex != -1)
-			return;
-		if (!inArray(g, opt.trGasIndex) && !inArray(g, -1) && opt.trGasIndex != -1)
-			return;
-		if (!inArray(v, opt.trValueIndex) && !inArray(v, -1) && opt.trValueIndex != -1)
-			return;
 	}
 	else
 		BOOST_ERROR(TestOutputHelper::testName() + " indexes section not set!");
@@ -575,13 +558,6 @@ void ImportTest::checkGeneralTestSectionSearch(json_spirit::mObject const& _expe
 			string trInfo = tr.netId + " data: " + toString(tr.dataInd) + " gas: " + toString(tr.gasInd) + " val: " + toString(tr.valInd);
 			if (_expects.count("result"))
 			{
-				Options const& opt = Options::get();
-				//filter transactions if a specific index set in options
-				if ((opt.trDataIndex != -1 && opt.trDataIndex != tr.dataInd) ||
-					(opt.trGasIndex != -1 && opt.trGasIndex != tr.gasInd) ||
-					(opt.trValueIndex != -1 && opt.trValueIndex != tr.valInd))
-					continue;
-
 				State postState = tr.postState;
 				eth::AccountMaskMap stateMap;
 				State expectState(0, OverlayDB(), eth::BaseState::Empty);
@@ -623,14 +599,9 @@ void ImportTest::traceStateDiff()
 	if (!opt.singleTestNet.empty())
 		network = opt.singleTestNet;
 
-	int d = opt.trDataIndex;
-	int g = opt.trGasIndex;
-	int v = opt.trValueIndex;
-
 	for(auto const& tr : m_transactions)
 	{
 		if (network == tr.netId || network == "ALL")
-		if ((d == tr.dataInd || d == -1) && (g == tr.gasInd || g == -1) && (v == tr.valInd || v == -1))
 		{
 			std::ostringstream log;
 			log << "trNetID: " << tr.netId << endl;
